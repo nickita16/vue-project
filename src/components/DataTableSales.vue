@@ -51,7 +51,7 @@ watch(filteredData, () => {
     <input v-model="filterWarehouseName" placeholder="Warehouse name" />
     <input v-model.number="minPrice" type="number" placeholder="for pay" />
   </div>
-  <div style="width: 98vw">
+  <div>
     <div v-if="filteredData.length === 0">Нет данных для отображения графика/данных</div>
     <ChartComponent
       v-else
@@ -144,7 +144,7 @@ input {
 }
 .table-container {
   overflow-x: auto;
-  /* max-width: 98vw; */
+  max-width: 98vw;
   display: block;
 }
 table {
