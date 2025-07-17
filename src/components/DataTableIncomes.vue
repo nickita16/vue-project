@@ -131,7 +131,7 @@ input {
 }
 .table-container {
   overflow-x: auto;
-  max-width: 98vw;
+  /* max-width: 98vw; */
   display: block;
 }
 table {
