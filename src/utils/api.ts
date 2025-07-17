@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://thingproxy.freeboard.io/fetch/http://109.73.206.144:6969/api',
+  baseURL:
+    'https://vue-project-git-main-nckts-projects.vercel.app/api/proxy?url=http://109.73.206.144:6969/api',
   // headers: {
   //   Authorization: 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie',
   // },
