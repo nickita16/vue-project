@@ -1,9 +1,10 @@
 import axios from 'axios'
+const isDev = import.meta.env.MODE === 'development'
 
 const api = axios.create({
-  baseURL:
-    // 'https://vue-project-git-main-nckts-projects.vercel.app/api/proxy?url=http://109.73.206.144:6969/api',
-    '/api/proxy',
+  baseURL: isDev ? 'http://109.73.206.144:6969/api' : '/api/proxy',
+
+  // baseURL: '/api/proxy',
   // headers: {
   //   Authorization: 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie',
   // },
