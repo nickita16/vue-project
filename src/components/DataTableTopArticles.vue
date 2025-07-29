@@ -2,9 +2,8 @@
 import type { dataElemOrders, dataOrders } from '@/types/api'
 import { computed } from 'vue'
 
-// Определяем интерфейс для элементов данных
 type ExtraFields = 'count' | 'cancel_count'
-// Определяем пропсы с типизацией
+
 const props = defineProps<{
   data: dataOrders['data']
   dataPrev: dataOrders['data']
@@ -47,11 +46,6 @@ const sortedItems = computed(() => {
     const nmId = Number(nmIdStr)
     const previousValue = prevSumsMap[nmId] ?? null
 
-    // const percentageChange =
-    //   previousValue !== null && previousValue !== 0
-    //     ? ((currentValue - previousValue) / previousValue) * 100
-    //     : null
-
     const percentageChange =
       previousValue === null ? null : ((currentValue - previousValue) / (previousValue || 1)) * 100
 
@@ -78,8 +72,6 @@ const sortedItems = computed(() => {
         <th>current value</th>
         <th>prev value</th>
         <th>change</th>
-
-        <!-- <th>warehouse_name</th> -->
       </tr>
     </thead>
     <tbody>

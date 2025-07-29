@@ -4,7 +4,11 @@ import OrdersPage from '@/views/OrdersView.vue'
 import StocksView from '@/views/StocksView.vue'
 import SalesView from '@/views/SalesView.vue'
 import IncomesView from '@/views/IncomesView.vue'
+
 import MarkPriceSaleView from '@/views/MarkPriceSaleView.vue'
+import MarkCountSalesView from '@/views/MarkCountSalesView.vue'
+import MarkCountCancelView from '@/views/MarkCountCancelView.vue'
+import MarkDiscountPercentView from '@/views/MarkDiscountPercentView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +42,22 @@ const router = createRouter({
       path: '/markpricesale',
       name: 'mark price sale',
       component: MarkPriceSaleView,
+    },
+
+    {
+      path: '/markcountsales',
+      name: 'mark count sales',
+      component: MarkCountSalesView,
+    },
+    {
+      path: '/markcountcancel',
+      name: 'mark count cancel',
+      component: MarkCountCancelView,
+    },
+    {
+      path: '/markdiscountpercent',
+      name: 'mark discount percent',
+      component: MarkDiscountPercentView,
     },
 
     {

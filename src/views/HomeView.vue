@@ -5,6 +5,11 @@ import { computed, onMounted, ref } from 'vue'
 import LineChartComponent from '@/components/LineChartComponent.vue'
 import DataTableTopArticles from '@/components/DataTableTopArticles.vue'
 
+const currentTo = ref('2025-07-29')
+const currentFrom = ref('2025-06-29')
+const prevTo = ref('2025-05-29')
+const prevFrom = ref('2025-04-29')
+
 const currentOrders = ref<dataOrders>({
   data: [],
   links: {
@@ -24,29 +29,31 @@ const prevOrders = ref<dataOrders>({
   },
 })
 
-const ordersParams = {
-  key: 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie',
-  dateFrom: '2025-06-29',
-  dateTo: '2025-07-29',
-  limit: '150',
-}
-const ordersPrevParams = {
-  key: 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie',
-  dateFrom: '2025-04-29',
-  dateTo: '2025-05-29',
-  limit: '150',
-}
-
-onMounted(async () => {
+const fetchOrders = async () => {
   try {
-    const response = await getOrders(ordersParams)
-    const responsePrev = await getOrders(ordersPrevParams)
+    const response = await getOrders({
+      key: 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie',
+      dateFrom: currentFrom.value,
+      dateTo: currentTo.value,
+      limit: '150',
+    })
+
+    const responsePrev = await getOrders({
+      key: 'E6kUTYrYwZq2tN4QEtyzsbEBk3ie',
+      dateFrom: prevFrom.value,
+      dateTo: prevTo.value,
+      limit: '150',
+    })
+
     currentOrders.value = response.data
     prevOrders.value = responsePrev.data
   } catch (error) {
     console.error('Ошибка при получении заказов:', error)
   }
-})
+}
+
+// начальная загрузка
+onMounted(fetchOrders)
 
 const salesByWarehouse = computed(() => {
   const map = new Map<string, number>()
@@ -64,25 +71,27 @@ const salesByWarehouse = computed(() => {
   <div class="home">
     <div>
       Current period:
-      <input type="date" value="2025-07-29" />
-      <input type="date" value="2025-06-29" />
+      <input type="date" v-model="currentTo" />
+      <input type="date" v-model="currentFrom" />
     </div>
     <div>
       Prev period:
-      <input type="date" value="2025-05-29" />
-      <input type="date" value="2025-04-29" />
+      <input type="date" v-model="prevTo" />
+      <input type="date" v-model="prevFrom" />
     </div>
     *graphs display the current period
     <div class="tableGraph">
       <div class="symmarGraph">
-        <div class="graph">
-          <LineChartComponent
-            :labels="salesByWarehouse.map(([name]) => name)"
-            :data="salesByWarehouse.map(([_, count]) => count)"
-            data-type="sales"
-            title-text="count sales"
-          />
-        </div>
+        <router-link to="/markcountsales" custom v-slot="{ navigate }">
+          <div class="graph" @click="navigate" style="cursor: pointer">
+            <LineChartComponent
+              :labels="salesByWarehouse.map(([name]) => name)"
+              :data="salesByWarehouse.map(([_, count]) => count)"
+              data-type="sales"
+              title-text="count sales"
+            />
+          </div>
+        </router-link>
         <DataTableTopArticles
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
@@ -107,18 +116,20 @@ const salesByWarehouse = computed(() => {
         />
       </div>
       <div class="symmarGraph">
-        <div class="graph">
-          <LineChartComponent
-            :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"
-            :data="
-              currentOrders.data.map((item) =>
-                item.cancel_dt == null ? Number(item.cancel_dt) : 1,
-              )
-            "
-            data-type="cancel"
-            title-text="count cancel"
-          />
-        </div>
+        <router-link to="/markcountcancel" custom v-slot="{ navigate }">
+          <div class="graph" @click="navigate" style="cursor: pointer">
+            <LineChartComponent
+              :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"
+              :data="
+                currentOrders.data.map((item) =>
+                  item.cancel_dt == null ? Number(item.cancel_dt) : 1,
+                )
+              "
+              data-type="cancel"
+              title-text="count cancel"
+            />
+          </div>
+        </router-link>
         <DataTableTopArticles
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
@@ -126,14 +137,16 @@ const salesByWarehouse = computed(() => {
         />
       </div>
       <div class="symmarGraph">
-        <div class="graph">
-          <LineChartComponent
-            :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"
-            :data="currentOrders.data.map((item) => Number(item.discount_percent))"
-            data-type="discount"
-            title-text="discount percent"
-          />
-        </div>
+        <router-link to="/markdiscountpercent" custom v-slot="{ navigate }">
+          <div class="graph" @click="navigate" style="cursor: pointer">
+            <LineChartComponent
+              :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"
+              :data="currentOrders.data.map((item) => Number(item.discount_percent))"
+              data-type="discount"
+              title-text="discount percent"
+            />
+          </div>
+        </router-link>
         <DataTableTopArticles
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
