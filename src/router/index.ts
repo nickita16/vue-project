@@ -1,15 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/HomeView.vue'
 import OrdersPage from '@/views/OrdersView.vue'
 import StocksView from '@/views/StocksView.vue'
 import SalesView from '@/views/SalesView.vue'
 import IncomesView from '@/views/IncomesView.vue'
+import MarkPriceSaleView from '@/views/MarkPriceSaleView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/orders',
       name: 'orders',
       component: OrdersPage,
     },
@@ -28,6 +34,12 @@ const router = createRouter({
       name: 'sales',
       component: SalesView,
     },
+    {
+      path: '/markpricesale',
+      name: 'mark price sale',
+      component: MarkPriceSaleView,
+    },
+
     {
       path: '/about',
       name: 'about',

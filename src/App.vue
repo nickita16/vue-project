@@ -6,8 +6,9 @@ import { RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
+        <router-link class="redirPage" to="/">home</router-link>
         <router-link class="redirPage" to="/incomes">incomes</router-link>
-        <router-link class="redirPage" to="/">orders</router-link>
+        <router-link class="redirPage" to="/orders">orders</router-link>
         <router-link class="redirPage" to="/sales">sales</router-link>
         <router-link class="redirPage" to="/stocks">stocks</router-link>
       </nav>
@@ -25,6 +26,10 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+input {
+  background-color: rgb(187, 187, 187);
+  font-size: 20px;
 }
 .redirPage {
   border: 1px solid black;
