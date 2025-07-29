@@ -71,19 +71,23 @@ const salesByWarehouse = computed(() => {
 <template>
   <div class="home">
     <div>
-      Current period:
+      <div>Current period:</div>
+      To:
       <input type="date" v-model="currentTo" />
+      From:
       <input type="date" v-model="currentFrom" />
     </div>
     <div>
-      Prev period:
+      <div>Prev period:</div>
+      To:
       <input type="date" v-model="prevTo" />
+      From:
       <input type="date" v-model="prevFrom" />
     </div>
     *graphs display the current period
     <div class="tableGraph">
       <div class="symmarGraph">
-        <router-link to="/markcountsales" custom v-slot="{ navigate }">
+        <router-link to="/mark/countsales" custom v-slot="{ navigate }">
           <div class="graph" @click="navigate" style="cursor: pointer">
             <LineChartComponent
               :labels="salesByWarehouse.map(([name]) => name)"
@@ -100,7 +104,7 @@ const salesByWarehouse = computed(() => {
         />
       </div>
       <div class="symmarGraph">
-        <router-link to="/markpricesale" custom v-slot="{ navigate }">
+        <router-link to="/mark/pricesale" custom v-slot="{ navigate }">
           <div class="graph" @click="navigate" style="cursor: pointer">
             <LineChartComponent
               :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"
@@ -117,7 +121,7 @@ const salesByWarehouse = computed(() => {
         />
       </div>
       <div class="symmarGraph">
-        <router-link to="/markcountcancel" custom v-slot="{ navigate }">
+        <router-link to="/mark/countcancel" custom v-slot="{ navigate }">
           <div class="graph" @click="navigate" style="cursor: pointer">
             <LineChartComponent
               :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"
@@ -138,7 +142,7 @@ const salesByWarehouse = computed(() => {
         />
       </div>
       <div class="symmarGraph">
-        <router-link to="/markdiscountpercent" custom v-slot="{ navigate }">
+        <router-link to="/mark/discountpercent" custom v-slot="{ navigate }">
           <div class="graph" @click="navigate" style="cursor: pointer">
             <LineChartComponent
               :labels="currentOrders.data.map((item) => item.date.slice(5, 16))"

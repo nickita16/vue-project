@@ -39,23 +39,23 @@ const router = createRouter({
       component: SalesView,
     },
     {
-      path: '/markpricesale',
+      path: '/mark/pricesale',
       name: 'mark price sale',
       component: MarkPriceSaleView,
     },
 
     {
-      path: '/markcountsales',
+      path: '/mark/countsales',
       name: 'mark count sales',
       component: MarkCountSalesView,
     },
     {
-      path: '/markcountcancel',
+      path: '/mark/countcancel',
       name: 'mark count cancel',
       component: MarkCountCancelView,
     },
     {
-      path: '/markdiscountpercent',
+      path: '/mark/discountpercent',
       name: 'mark discount percent',
       component: MarkDiscountPercentView,
     },
