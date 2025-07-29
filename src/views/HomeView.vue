@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { dataOrders } from '@/types/api'
 import { getOrders } from '@/utils/api'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import LineChartComponent from '@/components/LineChartComponent.vue'
 import DataTableTopArticles from '@/components/DataTableTopArticles.vue'
 
@@ -52,8 +52,9 @@ const fetchOrders = async () => {
   }
 }
 
-// начальная загрузка
 onMounted(fetchOrders)
+
+watch([currentFrom, currentTo, prevFrom, prevTo], fetchOrders)
 
 const salesByWarehouse = computed(() => {
   const map = new Map<string, number>()
