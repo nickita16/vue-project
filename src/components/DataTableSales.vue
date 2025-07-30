@@ -196,7 +196,7 @@ input {
   display: block;
 }
 table {
-  min-width: 600px;
+  min-width: 300px;
   width: 100%;
   border-collapse: collapse;
 }
