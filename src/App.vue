@@ -6,11 +6,19 @@ import { RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
-        <router-link class="redirPage" to="/">home</router-link>
-        <router-link class="redirPage" to="/incomes">incomes</router-link>
-        <router-link class="redirPage" to="/orders">orders</router-link>
-        <router-link class="redirPage" to="/sales">sales</router-link>
-        <router-link class="redirPage" to="/stocks">stocks</router-link>
+        <router-link class="redirPage" exact-active-class="active-link" to="/">home</router-link>
+        <router-link class="redirPage" exact-active-class="active-link" to="/incomes"
+          >incomes</router-link
+        >
+        <router-link class="redirPage" exact-active-class="active-link" to="/orders"
+          >orders</router-link
+        >
+        <router-link class="redirPage" exact-active-class="active-link" to="/sales"
+          >sales</router-link
+        >
+        <router-link class="redirPage" exact-active-class="active-link" to="/stocks"
+          >stocks</router-link
+        >
       </nav>
     </div>
   </header>
@@ -19,6 +27,11 @@ import { RouterView } from 'vue-router'
 </template>
 
 <style scoped>
+.active-link {
+  font-weight: bold;
+  background-color: #5d5d5d;
+  border-bottom: 2px solid #42b983;
+}
 nav {
   height: 60px;
   background-color: rgb(130, 130, 130);

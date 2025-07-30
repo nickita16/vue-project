@@ -3,13 +3,37 @@
 import { computed, ref, watch } from 'vue'
 import type { dataStocks, dataElemStocks } from '../types/api'
 import ChartComponent from './ChartComponent.vue'
+import { useFiltersStore } from '@/stores/filters'
 
 const props = defineProps<{ items: dataStocks }>()
+const filters = useFiltersStore()
 // defineProps<{ items: string }>()
 
-const filterWarehouseName = ref('')
+const filterWarehouseName = computed({
+  get: () => filters.filterWarehouseName,
+  set: (v) => (filters.filterWarehouseName = v),
+})
 // const filterCategory = ref('')
-const minPrice = ref<number | null>(null)
+const minPrice = computed({
+  get: () => filters.minPrice,
+  set: (v) => (filters.minPrice = v),
+})
+const filterDate = computed({
+  get: () => filters.filterDate,
+  set: (v) => (filters.filterDate = v),
+})
+const filterNmId = computed({
+  get: () => filters.filterNmId,
+  set: (v) => (filters.filterNmId = v),
+})
+const filterBrand = computed({
+  get: () => filters.filterBrand,
+  set: (v) => (filters.filterBrand = v),
+})
+const filterCategory = computed({
+  get: () => filters.filterCategory,
+  set: (v) => (filters.filterCategory = v),
+})
 
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
@@ -27,7 +51,19 @@ const filteredData = computed(() => {
     //   Number(item.price),
     //   minPrice.value,
     // )
-    return matchesName && matchesPrice
+    const matchesBrand =
+      !filterBrand.value || item.brand?.toLowerCase().includes(filterBrand.value.toLowerCase())
+
+    const matchesCategory =
+      !filterCategory.value ||
+      item.category?.toLowerCase().includes(filterCategory.value.toLowerCase())
+    const matchesDate = !filterDate.value || item.date === filterDate.value
+
+    const matchesNmId = !filterNmId.value || String(item.nm_id).includes(filterNmId.value)
+
+    return (
+      matchesName && matchesPrice && matchesBrand && matchesDate && matchesNmId && matchesCategory
+    )
   })
 })
 
@@ -43,14 +79,24 @@ const totalPages = computed(() => {
 watch(filteredData, () => {
   currentPage.value = 1
 })
+function resetFilters() {
+  filters.$reset()
+}
 </script>
 
 <template>
   <div class="filters">
     <div>Filters:</div>
-    <input v-model="filterWarehouseName" placeholder="Warehouse name" />
-    <input v-model.number="minPrice" type="number" placeholder="Min price" />
+    <div>
+      <input v-model="filterWarehouseName" placeholder="Warehouse name (Регион)" />
+      <input v-model.number="minPrice" type="number" placeholder="quantity" />
+    </div>
+    <input v-model="filterNmId" placeholder="nm_id (артикул)" />
+    <input v-model="filterDate" placeholder="date" />
+    <input v-model="filterCategory" placeholder="category" />
+    <input v-model="filterBrand" placeholder="brand" />
   </div>
+  <button style="font-size: 20px" @click="resetFilters">Сбросить фильтры</button>
   <div style="height: 400px">
     <div v-if="filteredData.length === 0">Нет данных для отображения графика/данных</div>
     <ChartComponent

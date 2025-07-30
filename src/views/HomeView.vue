@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { dataOrders } from '@/types/api'
 import { getOrders } from '@/utils/api'
+import { useOrdersStore } from '@/stores/orders'
 import { computed, onMounted, ref, watch } from 'vue'
 import LineChartComponent from '@/components/LineChartComponent.vue'
 import DataTableTopArticles from '@/components/DataTableTopArticles.vue'
@@ -9,6 +10,8 @@ const currentTo = ref('2025-07-29')
 const currentFrom = ref('2025-06-29')
 const prevTo = ref('2025-05-29')
 const prevFrom = ref('2025-04-29')
+
+const store = useOrdersStore()
 
 const currentOrders = ref<dataOrders>({
   data: [],
@@ -46,7 +49,9 @@ const fetchOrders = async () => {
     })
 
     currentOrders.value = response.data
+    store.setCurrentOrders(response.data)
     prevOrders.value = responsePrev.data
+    store.setPrevOrders(responsePrev.data)
   } catch (error) {
     console.error('Ошибка при получении заказов:', error)
   }

@@ -4,11 +4,17 @@ import { computed } from 'vue'
 
 type ExtraFields = 'count' | 'cancel_count'
 
-const props = defineProps<{
-  data: dataOrders['data']
-  dataPrev: dataOrders['data']
-  field: keyof dataOrders['data'][number] | ExtraFields
-}>()
+const props = withDefaults(
+  defineProps<{
+    data: dataOrders['data']
+    dataPrev: dataOrders['data']
+    field: keyof dataOrders['data'][number] | ExtraFields
+    shouldSlice?: boolean
+  }>(),
+  {
+    shouldSlice: true,
+  },
+)
 
 const sortedItems = computed(() => {
   const getFieldValue = (
@@ -47,7 +53,13 @@ const sortedItems = computed(() => {
     const previousValue = prevSumsMap[nmId] ?? null
 
     const percentageChange =
-      previousValue === null ? null : ((currentValue - previousValue) / (previousValue || 1)) * 100
+      previousValue === null
+        ? currentValue !== 0
+          ? props.field == 'cancel_count'
+            ? (currentValue - 0) * 100
+            : null
+          : null
+        : ((currentValue - previousValue) / (previousValue || 1)) * 100
 
     return {
       nm_id: nmId,
@@ -57,10 +69,19 @@ const sortedItems = computed(() => {
     }
   })
 
-  return combined
-    .filter((item) => item.percentageChange !== null)
-    .sort((a, b) => b.percentageChange! - a.percentageChange!)
-    .slice(0, 5)
+  // return combined
+  //   .filter((item) => item.percentageChange !== null)
+  //   .sort((a, b) => b.percentageChange! - a.percentageChange!)
+  //   .slice(0, 5)
+  const result = props.shouldSlice
+    ? combined
+        .filter((item) => item.percentageChange !== null)
+        .sort((a, b) => b.percentageChange! - a.percentageChange!)
+        .slice(0, 5)
+    : combined
+        .filter((item) => item.percentageChange !== null)
+        .sort((a, b) => b.percentageChange! - a.percentageChange!)
+  return result
 })
 </script>
 
@@ -76,7 +97,9 @@ const sortedItems = computed(() => {
     </thead>
     <tbody>
       <tr v-for="item in sortedItems" :key="item.nm_id">
-        <td>{{ item.nm_id }}</td>
+        <td>
+          <router-link :to="`/detail/${item.nm_id}`">{{ item.nm_id }}</router-link>
+        </td>
         <td>{{ item.currentValue.toFixed(2) }}</td>
         <td>{{ item.previousValue?.toFixed(2) }}</td>
         <td v-if="item.percentageChange !== null">

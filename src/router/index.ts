@@ -4,11 +4,11 @@ import OrdersPage from '@/views/OrdersView.vue'
 import StocksView from '@/views/StocksView.vue'
 import SalesView from '@/views/SalesView.vue'
 import IncomesView from '@/views/IncomesView.vue'
+import DetailView from '@/views/DetailView.vue'
 
-import MarkPriceSaleView from '@/views/MarkPriceSaleView.vue'
+// import MarkPriceSaleView from '@/views/MarkPriceSaleView.vue'
 import MarkCountSalesView from '@/views/MarkCountSalesView.vue'
-import MarkCountCancelView from '@/views/MarkCountCancelView.vue'
-import MarkDiscountPercentView from '@/views/MarkDiscountPercentView.vue'
+// import MarkDiscountPercentView from '@/views/MarkDiscountPercentView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +41,7 @@ const router = createRouter({
     {
       path: '/mark/pricesale',
       name: 'mark price sale',
-      component: MarkPriceSaleView,
+      component: MarkCountSalesView,
     },
 
     {
@@ -52,12 +52,18 @@ const router = createRouter({
     {
       path: '/mark/countcancel',
       name: 'mark count cancel',
-      component: MarkCountCancelView,
+      component: MarkCountSalesView,
     },
     {
       path: '/mark/discountpercent',
       name: 'mark discount percent',
-      component: MarkDiscountPercentView,
+      component: MarkCountSalesView,
+    },
+    {
+      path: '/detail/:id',
+      name: 'Detail',
+      component: DetailView,
+      props: true,
     },
 
     {
