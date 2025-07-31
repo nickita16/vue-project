@@ -3,25 +3,48 @@ import type { dataOrders } from '@/types/api'
 import { getOrders } from '@/utils/api'
 import { useOrdersStore } from '@/stores/orders'
 import { useMetricsStore } from '@/stores/metrics'
+import { useFiltersStore } from '@/stores/filters'
 import { computed, onMounted, ref, watch } from 'vue'
 import LineChartComponent from '@/components/LineChartComponent.vue'
 import DataTableTopArticles from '@/components/DataTableTopArticles.vue'
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0') // Months are 0-based
+  const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
 
 const today = new Date()
-const currentTo = ref(formatDate(today)) // Today
-const currentFrom = ref(formatDate(new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000))) // Approx. one month ago
-const prevTo = ref(formatDate(new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000))) // Approx. one month ago
-const prevFrom = ref(formatDate(new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000))) // Approx. two months ago
+const currentTo = ref(formatDate(today))
+const currentFrom = ref(formatDate(new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000)))
+const prevTo = ref(formatDate(new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000)))
+const prevFrom = ref(formatDate(new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000)))
 
 const store = useOrdersStore()
 const storeMetrics = useMetricsStore()
+const filters = useFiltersStore()
+
+const filterNmId = computed({
+  get: () => filters.filterNmId,
+  set: (v) => (filters.filterNmId = v),
+})
+const filterCategory = computed({
+  get: () => filters.filterCategory,
+  set: (v) => (filters.filterCategory = v),
+})
+const filterDate = computed({
+  get: () => filters.filterDate,
+  set: (v) => (filters.filterDate = v),
+})
+const filterRegion = computed({
+  get: () => filters.filterWarehouseName,
+  set: (v) => (filters.filterWarehouseName = v),
+})
+const filterBrand = computed({
+  get: () => filters.filterBrand,
+  set: (v) => (filters.filterBrand = v),
+})
 
 const currentOrders = ref<dataOrders>({
   data: [],
@@ -84,10 +107,23 @@ const salesByWarehouse = computed(() => {
 
   return Array.from(map.entries())
 })
+
+function resetFilters() {
+  filters.$reset()
+}
 </script>
 
 <template>
   <div class="home">
+    <div>
+      Filters:
+      <input v-model="filterNmId" placeholder="Article (nm_id)" />
+      <input v-model="filterCategory" placeholder="Category" />
+      <input v-model="filterDate" placeholder="Date (with time)" />
+      <input v-model="filterRegion" placeholder="Region (warehouse_name)" />
+      <input v-model="filterBrand" placeholder="Brand" />
+    </div>
+    <button style="font-size: 20px" @click="resetFilters">Сбросить фильтры</button>
     <div>
       <div>Current period:</div>
       To:
@@ -110,7 +146,7 @@ const salesByWarehouse = computed(() => {
             <LineChartComponent
               :labels="salesByWarehouse.map(([name]) => name)"
               :data="salesByWarehouse.map(([_, count]) => count)"
-              data-type="sales"
+              data-type="count"
               title-text="count sales"
             />
           </div>
@@ -119,6 +155,11 @@ const salesByWarehouse = computed(() => {
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
           field="count"
+          :filterArticle="filterNmId"
+          :filterRegion="filterRegion"
+          :filterDate="filterDate"
+          :filterCategories="filterCategory"
+          :filterBrand="filterBrand"
         />
       </div>
       <div class="symmarGraph">
@@ -136,6 +177,11 @@ const salesByWarehouse = computed(() => {
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
           field="total_price"
+          :filterArticle="filterNmId"
+          :filterRegion="filterRegion"
+          :filterDate="filterDate"
+          :filterCategories="filterCategory"
+          :filterBrand="filterBrand"
         />
       </div>
       <div class="symmarGraph">
@@ -157,6 +203,11 @@ const salesByWarehouse = computed(() => {
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
           field="cancel_count"
+          :filterArticle="filterNmId"
+          :filterRegion="filterRegion"
+          :filterDate="filterDate"
+          :filterCategories="filterCategory"
+          :filterBrand="filterBrand"
         />
       </div>
       <div class="symmarGraph">
@@ -174,6 +225,11 @@ const salesByWarehouse = computed(() => {
           :data="currentOrders.data"
           :dataPrev="prevOrders.data"
           field="discount_percent"
+          :filterArticle="filterNmId"
+          :filterRegion="filterRegion"
+          :filterDate="filterDate"
+          :filterCategories="filterCategory"
+          :filterBrand="filterBrand"
         />
       </div>
     </div>

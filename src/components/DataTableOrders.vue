@@ -98,7 +98,7 @@ function resetFilters() {
       <input v-model.number="minPrice" type="number" placeholder="quantity" />
     </div>
     <input v-model="filterNmId" placeholder="nm_id (артикул)" />
-    <input v-model="filterDate" placeholder="date" />
+    <input v-model="filterDate" placeholder="date (with time)" />
     <input v-model="filterCategory" placeholder="category" />
     <input v-model="filterBrand" placeholder="brand" />
   </div>

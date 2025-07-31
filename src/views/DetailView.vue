@@ -50,10 +50,6 @@ onMounted(() => {
             <td>{{ key }}</td>
             <td>{{ value }}</td>
           </tr>
-          <tr>
-            <td>rwer</td>
-            <td>rwer</td>
-          </tr>
         </table>
       </div>
     </div>
@@ -69,30 +65,32 @@ onMounted(() => {
             <th>Value</th>
           </tr>
         </thead>
-        <tr>
-          <td>count</td>
-          <td>{{ storeMetrics.dateFrom }}</td>
-          <td>{{ storeMetrics.dateTo }}</td>
-          <td>{{ storeMetrics.currentValues.count[idNum] }}</td>
-        </tr>
-        <tr>
-          <td>total_price</td>
-          <td>{{ storeMetrics.dateFrom }}</td>
-          <td>{{ storeMetrics.dateTo }}</td>
-          <td>{{ storeMetrics.currentValues.total_price[idNum].toFixed(2) }}</td>
-        </tr>
-        <tr>
-          <td>cancel_count</td>
-          <td>{{ storeMetrics.dateFrom }}</td>
-          <td>{{ storeMetrics.dateTo }}</td>
-          <td>{{ storeMetrics.currentValues.cancel_count[idNum] }}</td>
-        </tr>
-        <tr>
-          <td>discount_percent</td>
-          <td>{{ storeMetrics.dateFrom }}</td>
-          <td>{{ storeMetrics.dateTo }}</td>
-          <td>{{ storeMetrics.currentValues.discount_percent[idNum] }}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>count sales</td>
+            <td>{{ storeMetrics.dateFrom }}</td>
+            <td>{{ storeMetrics.dateTo }}</td>
+            <td>{{ storeMetrics.currentValues.count[idNum] }}</td>
+          </tr>
+          <tr>
+            <td>total price</td>
+            <td>{{ storeMetrics.dateFrom }}</td>
+            <td>{{ storeMetrics.dateTo }}</td>
+            <td>{{ storeMetrics.currentValues.total_price[idNum].toFixed(2) }}</td>
+          </tr>
+          <tr>
+            <td>cancel count</td>
+            <td>{{ storeMetrics.dateFrom }}</td>
+            <td>{{ storeMetrics.dateTo }}</td>
+            <td>{{ storeMetrics.currentValues.cancel_count[idNum] }}</td>
+          </tr>
+          <tr>
+            <td>discount percent</td>
+            <td>{{ storeMetrics.dateFrom }}</td>
+            <td>{{ storeMetrics.dateTo }}</td>
+            <td>{{ storeMetrics.currentValues.discount_percent[idNum] }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

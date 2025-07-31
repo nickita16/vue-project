@@ -11,6 +11,11 @@ const props = withDefaults(
     dataPrev: dataOrders['data']
     field: keyof dataOrders['data'][number] | ExtraFields
     shouldSlice?: boolean
+    filterArticle?: string
+    filterRegion?: string
+    filterDate?: string
+    filterCategories?: string
+    filterBrand?: string
   }>(),
   {
     shouldSlice: true,
@@ -30,11 +35,31 @@ const sortedItems = computed(() => {
         ? 1
         : 0
     }
+    // console.log(item)
 
     const raw = item[field]
     const num = typeof raw === 'number' ? raw : parseFloat(raw as string)
     return isNaN(num) ? 0 : num
   }
+
+  const filteredCurrentData = props.data.filter((item) => {
+    console.log(item)
+    const matchesArticle =
+      !props.filterArticle || item.nm_id?.toString().includes(props.filterArticle)
+    const matchesRegion =
+      !props.filterRegion ||
+      item.warehouse_name?.toLowerCase().includes(props.filterRegion.toLowerCase())
+    // console.log('item.warehouse_name?.toLowerCase()', item.warehouse_name?.toLowerCase())
+    const matchesDate = !props.filterDate || item.date?.toString().includes(props.filterDate)
+    console.log('item.date?.toString()', item.date?.toString())
+    const matchesCategory =
+      !props.filterCategories ||
+      item.category?.toLowerCase().includes(props.filterCategories.toLowerCase())
+    const matchesBrand =
+      !props.filterBrand || item.brand?.toLowerCase().includes(props.filterBrand.toLowerCase())
+
+    return matchesArticle && matchesRegion && matchesDate && matchesCategory && matchesBrand
+  })
 
   const prevSumsMap = props.dataPrev.reduce<Record<number, number>>((acc, item) => {
     const nmId = item.nm_id
@@ -43,7 +68,7 @@ const sortedItems = computed(() => {
     return acc
   }, {})
 
-  const currentSumsMap = props.data.reduce<Record<number, number>>((acc, item) => {
+  const currentSumsMap = filteredCurrentData.reduce<Record<number, number>>((acc, item) => {
     const nmId = item.nm_id
     const value = getFieldValue(item, props.field)
     acc[nmId] = (acc[nmId] || 0) + value
@@ -87,6 +112,8 @@ const sortedItems = computed(() => {
         .sort((a, b) => b.percentageChange! - a.percentageChange!)
   return result
 })
+
+// console.log(sortedItems)
 </script>
 
 <template>
