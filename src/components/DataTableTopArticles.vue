@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { dataElemOrders, dataOrders } from '@/types/api'
 import { computed } from 'vue'
+import { useMetricsStore } from '@/stores/metrics'
 
 type ExtraFields = 'count' | 'cancel_count'
 
@@ -15,6 +16,7 @@ const props = withDefaults(
     shouldSlice: true,
   },
 )
+const store = useMetricsStore()
 
 const sortedItems = computed(() => {
   const getFieldValue = (
@@ -45,6 +47,8 @@ const sortedItems = computed(() => {
     const nmId = item.nm_id
     const value = getFieldValue(item, props.field)
     acc[nmId] = (acc[nmId] || 0) + value
+    // console.log(acc)
+    store.addCurrentValue(props.field, nmId, acc[nmId])
     return acc
   }, {})
 

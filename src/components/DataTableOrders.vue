@@ -7,7 +7,6 @@ import { useFiltersStore } from '@/stores/filters'
 const props = defineProps<{ items: dataOrders }>()
 const filters = useFiltersStore()
 
-// Фильтры, связанные с хранилищем
 const filterWarehouseName = computed({
   get: () => filters.filterWarehouseName,
   set: (v) => (filters.filterWarehouseName = v),
@@ -156,7 +155,10 @@ function resetFilters() {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in paginatedData" :key="item.barcode + '-' + item.warehouse_name">
+        <tr
+          v-for="item in paginatedData"
+          :key="item.barcode + '-' + item.warehouse_name + '-' + item.date"
+        >
           <!-- <td>{{ index }}</td> -->
           <td>{{ item.warehouse_name }}</td>
           <td>{{ item.discount_percent }}</td>

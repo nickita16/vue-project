@@ -12,10 +12,8 @@ import {
 import { Line } from 'vue-chartjs'
 import { computed } from 'vue'
 
-// Регистрируем компоненты Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-// Пропсы
 const props = defineProps<{
   labels: string[]
   data: number[]
@@ -23,7 +21,6 @@ const props = defineProps<{
   titleText?: string
 }>()
 
-// Реактивные данные графика
 const chartData = computed(() => ({
   labels: props.labels,
   datasets: [
@@ -37,7 +34,6 @@ const chartData = computed(() => ({
   ],
 }))
 
-// Опции графика
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,

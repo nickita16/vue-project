@@ -2,16 +2,26 @@
 import type { dataOrders } from '@/types/api'
 import { getOrders } from '@/utils/api'
 import { useOrdersStore } from '@/stores/orders'
+import { useMetricsStore } from '@/stores/metrics'
 import { computed, onMounted, ref, watch } from 'vue'
 import LineChartComponent from '@/components/LineChartComponent.vue'
 import DataTableTopArticles from '@/components/DataTableTopArticles.vue'
 
-const currentTo = ref('2025-07-29')
-const currentFrom = ref('2025-06-29')
-const prevTo = ref('2025-05-29')
-const prevFrom = ref('2025-04-29')
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0') // Months are 0-based
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const today = new Date()
+const currentTo = ref(formatDate(today)) // Today
+const currentFrom = ref(formatDate(new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000))) // Approx. one month ago
+const prevTo = ref(formatDate(new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000))) // Approx. one month ago
+const prevFrom = ref(formatDate(new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000))) // Approx. two months ago
 
 const store = useOrdersStore()
+const storeMetrics = useMetricsStore()
 
 const currentOrders = ref<dataOrders>({
   data: [],
@@ -47,6 +57,9 @@ const fetchOrders = async () => {
       dateTo: prevTo.value,
       limit: '150',
     })
+
+    console.log('currentFrom', currentFrom.value)
+    storeMetrics.addDate(currentFrom.value, currentTo.value)
 
     currentOrders.value = response.data
     store.setCurrentOrders(response.data)
